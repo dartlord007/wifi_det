@@ -9,7 +9,7 @@ class Utils {
     Color color,
   ) =>
       showSimpleNotification(
-        Text('Internet Connectivity Update'),
+        const Text('Internet Connectivity Update'),
         subtitle: Text(message),
         background: color,
       );

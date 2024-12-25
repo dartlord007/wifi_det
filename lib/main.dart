@@ -18,7 +18,7 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
-  static const String title = 'Has Internet?';
+  static const String title = 'Wifi or mobile data?';
 
   const MyApp({super.key});
 
@@ -43,8 +43,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
- late StreamSubscription<ConnectivityResult> subscription;
-  @override
+ late StreamSubscription<List<ConnectivityResult>> subscription;
+   @override
   void initState() {
     super.initState();
 
@@ -68,7 +68,7 @@ class _MainPageState extends State<MainPage> {
         body: Center(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(12)),
-            child: const Text('Check Connection', style: TextStyle(fontSize: 20)),
+            child: const Text('Am I Connected?', style: TextStyle(fontSize: 20)),
             onPressed: () async {
               var connectivityResult = await (Connectivity().checkConnectivity());
               showConnectivitySnackBar(connectivityResult);
@@ -77,13 +77,14 @@ class _MainPageState extends State<MainPage> {
         ),
       );
 
-  void showConnectivitySnackBar(ConnectivityResult result) {
-    final hasInternet = result != ConnectivityResult.none;
-    final message = hasInternet
-        ? 'You have again ${result.toString()}'
-        : 'You have no internet';
-    final color = hasInternet ? Colors.green : Colors.red;
+  void showConnectivitySnackBar(List<ConnectivityResult> results) {
+  final ConnectivityResult result = results.first;
+  final hasInternet = result != ConnectivityResult.none;
+  final message = hasInternet
+      ? 'You are connected to the internet ${result.toString()}'
+      : 'You are not connected to the internet';
+  final color = hasInternet ? Colors.green : Colors.red;
 
-    Utils.showTopSnackBar(context, message, color);
-  }
+  Utils.showTopSnackBar(context, message, color);
+}
 }
