@@ -1,12 +1,11 @@
 import 'dart:async';
 
-// import 'package:wifi_det/connectivity.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:wifi_det/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 
+import 'utils.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,23 +36,20 @@ class MyApp extends StatelessWidget {
 class MainPage extends StatefulWidget {
   final String title;
 
-  const MainPage({super.key, 
-    required this.title,
-  });
+  const MainPage({super.key, required this.title});
 
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  late StreamSubscription subscription;
-
+ late StreamSubscription<ConnectivityResult> subscription;
   @override
   void initState() {
     super.initState();
 
     subscription =
-        Connectivity().onConnectivityChanged.listen(showConnectivitySnackBar as void Function(List<ConnectivityResult> event)?);
+        Connectivity().onConnectivityChanged.listen(showConnectivitySnackBar);
   }
 
   @override
@@ -74,8 +70,8 @@ class _MainPageState extends State<MainPage> {
             style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(12)),
             child: const Text('Check Connection', style: TextStyle(fontSize: 20)),
             onPressed: () async {
-              final result = await Connectivity().checkConnectivity();
-              showConnectivitySnackBar(result as ConnectivityResult);
+              var connectivityResult = await (Connectivity().checkConnectivity());
+              showConnectivitySnackBar(connectivityResult);
             },
           ),
         ),
