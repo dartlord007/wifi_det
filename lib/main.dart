@@ -15,11 +15,13 @@ Future main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  static final String title = 'Has Internet?';
+  static const String title = 'Has Internet?';
+
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) => OverlaySupport(
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: title,
           theme: ThemeData(primarySwatch: Colors.teal),
-          home: MainPage(title: title),
+          home: const MainPage(title: title),
         ),
       );
 }
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
 class MainPage extends StatefulWidget {
   final String title;
 
-  const MainPage({
+  const MainPage({super.key, 
     required this.title,
   });
 
@@ -69,8 +71,8 @@ class _MainPageState extends State<MainPage> {
         ),
         body: Center(
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(padding: EdgeInsets.all(12)),
-            child: Text('Check Connection', style: TextStyle(fontSize: 20)),
+            style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(12)),
+            child: const Text('Check Connection', style: TextStyle(fontSize: 20)),
             onPressed: () async {
               final result = await Connectivity().checkConnectivity();
               showConnectivitySnackBar(result as ConnectivityResult);
