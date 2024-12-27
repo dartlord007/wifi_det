@@ -4,8 +4,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
-
-import 'utils.dart';
+import 'package:wifi_det/views/homePage.dart';
+import '../utils.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: title,
           theme: ThemeData(primarySwatch: Colors.teal),
-          home: const MainPage(title: title),
+          home: const Homepage()
+          // const MainPage(title: title),
         ),
       );
 }
