@@ -1,10 +1,21 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 import 'package:wifi_det/controllers/bluetoothController.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:wifi_det/views/wifiPage.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
+
+  Future<void> requestLocationPermission() async {
+    final permission = await Permission.location.request();
+    if (permission != PermissionStatus.granted) {
+      // Handle permission denied
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +45,10 @@ class Homepage extends StatelessWidget {
                   ),
                   Center(
                     child: ElevatedButton(
-                        onPressed: () => controller.scanDevices,
+                        onPressed: () async {
+                          await requestLocationPermission();
+                          controller.scanDevices();
+                        },
                         style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.blueGrey,
@@ -54,30 +68,42 @@ class Homepage extends StatelessWidget {
                       stream: controller.scanResult,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                final data = snapshot.data![index];
-                                return Card(
-                                  elevation: 2,
-                                  child: ListTile(
-                                    title: Text(data.device.advName),
-                                    subtitle:
-                                        Text(data.device.remoteId.toString()),
-                                    trailing: Text(data.rssi.toString()),
-                                  ),
-                                );
-                              });
+                          // ignore: avoid_print
+                          print('Data: ${snapshot.data}');
+                          return SizedBox(
+                            height: 300,
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  final data = snapshot.data![index];
+                                  return Card(
+                                    // elevation: 2,
+                                    child: ListTile(
+                                      title: Text(data.device.platformName),
+                                      subtitle:
+                                          Text(data.device.remoteId.toString()),
+                                      trailing: Text(data.rssi.toString()),
+                                    ),
+                                  );
+                                }),
+                          );
+                          // return const Text("Device 1");
                         } else {
                           return const Center(
-                            child: Text("No devices found", style: TextStyle(color: Colors.black),),
+                            child: Text(
+                              "No devices found",
+                              style: TextStyle(color: Colors.black),
+                            ),
                           );
                         }
                       }),
-                      const SizedBox(
-                    height: 20,),
-                    const Text("End of app")
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.to(const WifiPage());
+                    },
+                    child: const Text('Go to Wifi Scanner'),
+                  )
                 ],
               ),
             );

@@ -8,7 +8,7 @@
             "name": "wifi_det",
             "request": "launch",
             "type": "dart",
-            "program": "lib/views/main.dart"
+            "program": "lib/main.dart"
         },
         {
             "name": "wifi_det (profile mode)",
