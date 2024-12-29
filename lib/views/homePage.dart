@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+// import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 import 'package:wifi_det/controllers/bluetoothController.dart';
@@ -67,7 +68,13 @@ class Homepage extends StatelessWidget {
                   StreamBuilder<List<ScanResult>>(
                       stream: controller.scanResult,
                       builder: (context, snapshot) {
-                        if (snapshot.hasData) {
+                        if (snapshot.hasError) {
+                          // ignore: avoid_print
+                          print('Error: ${snapshot.error}');
+                        }
+                        if (snapshot.hasData 
+                        && snapshot.data!.isNotEmpty
+                        ) {
                           // ignore: avoid_print
                           print('Data: ${snapshot.data}');
                           return SizedBox(
